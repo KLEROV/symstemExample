@@ -54,6 +54,7 @@
           <n-select
             placeholder="请选择价格精确方式"
             :options="watermarkPlaceList"
+            filterable
             v-model:value="formValue.watermarkPlace"
           />
         </n-form-item>
@@ -62,6 +63,7 @@
           <n-select
             placeholder="请选择价格精确位数"
             :options="pricePreciseNumList"
+            filterable
             v-model:value="formValue.pricePreciseNum"
           />
         </n-form-item>
@@ -70,6 +72,7 @@
           <n-select
             placeholder="请选择价格精确方式"
             :options="pricePreciseList"
+            filterable
             v-model:value="formValue.pricePrecise"
           />
         </n-form-item>

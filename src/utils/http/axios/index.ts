@@ -108,7 +108,9 @@ const transform: AxiosTransform = {
                 break;
             // 登录超时
             case 666:
-            console.log(321);
+                
+                localStorage.clear();
+                location.reload();
                 const LoginName = PageEnum.BASE_LOGIN_NAME;
                 const LoginPath = PageEnum.BASE_LOGIN;
                 if (router.currentRoute.value ?.name === LoginName) return;
@@ -123,12 +125,20 @@ const transform: AxiosTransform = {
                     maskClosable: false,
                     onPositiveClick: () => {
                         storage.clear();
-                        router.push(LoginName)
+                        router.push(LoginPath)
                     },
                     onNegativeClick: () => { },
                 });
+                
                 break;
             case 500:
+                if ($message) {
+                    $message.error(res.data.msg);
+                }else{
+                    return result;
+                }
+                break;
+            case 400:
                 if ($message) {
                     $message.error(res.data.msg);
                 }else{

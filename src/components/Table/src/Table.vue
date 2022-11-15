@@ -223,7 +223,7 @@
           }
         }
         const maxHeight = tableData.length ? `${unref(deviceHeight)}px` : 'auto';
-       
+        
         return {
           ...unref(getProps),
           loading: unref(getLoading),
@@ -263,7 +263,7 @@
         const { canResize } = unref(getProps);
         return canResize;
       });
-    console.log(124);
+
       async function computeTableHeight() {
         const table = unref(tableElRef);
         if (!table) return;

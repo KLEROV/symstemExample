@@ -1,6 +1,6 @@
 <template>
   <span :style="{ color }">
-    {{ value }}
+    {{ value || 0 }}
   </span>
 </template>
 <script lang="ts">

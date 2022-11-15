@@ -5,8 +5,6 @@ import router, { setupRouter } from './router';
 import { setupStore } from '@/store';
 import { setupNaive, setupDirectives } from '@/plugins';
 import { AppProvider } from '@/components/Application';
-
-
 async function bootstrap() {
   const appProvider = createApp(AppProvider);
 

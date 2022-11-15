@@ -36,9 +36,7 @@ const setting = {
     //分割菜单
     mixMenu: false,
     //触发移动端侧边栏的宽度
-    mobileWidth: 800,
-    // 折叠菜单
-    collapsed: false,
+    mobileWidth: 800
   },
   //面包屑
   crumbsSetting: {
@@ -48,7 +46,7 @@ const setting = {
     showIcon: false,
   },
   //菜单权限模式 FIXED 前端固定路由  BACK 动态获取
-  permissionMode: 'FIXED',
+  permissionMode: 'BACK',
   //是否开启路由动画
   isPageAnimate: true,
   //路由动画类型

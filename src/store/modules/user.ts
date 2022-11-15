@@ -3,9 +3,8 @@ import { createStorage } from '@/utils/Storage';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER, IS_LOCKSCREEN } from '@/store/mutation-types';
 import { ResultEnum } from '@/enums/httpEnum';
-
 const Storage = createStorage({ storage: localStorage });
-import { getUserInfo, login } from '@/api/system/user';
+import { getUserInfo, login,getMenuList } from '@/api/system/user';
 import { storage } from '@/utils/Storage';
 
 export interface IUserState {
@@ -15,6 +14,7 @@ export interface IUserState {
   avatar: string;
   permissions: any[];
   info: any;
+ 
 }
 
 export const useUserStore = defineStore({
@@ -26,6 +26,7 @@ export const useUserStore = defineStore({
     avatar: '',
     permissions: [],
     info: Storage.get(CURRENT_USER, {}),
+   
   }),
   getters: {
     getToken(): string {
@@ -56,18 +57,20 @@ export const useUserStore = defineStore({
     },
     setUserInfo(info) {
       this.info = info;
-    },
+    }, 
     // 登录
     async login(userInfo) {
       try {
+        
         const response = await login(userInfo);
         const { data, code } = response;
+        
         if (code === ResultEnum.SUCCESS) {
           const ex = 7 * 24 * 60 * 60 * 1000;
-          
           storage.set(ACCESS_TOKEN, data.token, ex);
           storage.set(CURRENT_USER, data, ex);
           storage.set(IS_LOCKSCREEN, false);
+        
           this.setToken(data.token);
           this.setUserInfo(data);
         }
@@ -79,16 +82,24 @@ export const useUserStore = defineStore({
 
     // 获取用户信息
     GetInfo() {
-     
-      return new Promise((resolve, reject) => {
-        getUserInfo('123')
+      const that = this;
+      getMenuList()
           .then((res) => {
+            const result = res.data;
+            if (result && result.length) {
+              const permissionsList = result;
+              that.setPermissions(permissionsList);
+              that.setUserInfo(result);
+            } else {
+              reject(new Error('getInfo: permissionsList must be a non-null array !'));
+            }
             resolve(res);
+            
           })
           .catch((error) => {
+            console.log('菜单失败，1');
             reject(error);
           });
-      });
     },
 
     // 登出

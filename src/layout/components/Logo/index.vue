@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
-    <!-- <img src="~@/assets/images/newlogo.png" alt="" :class="{ 'mr-2': !collapsed }" /> -->
-    <div style='font-size:25px;'>CLS后台</div>
+      <!-- <div style='font-size:20px;'>CLS</div> -->
+    <img src="~@/assets/images/newlogo.png" alt="" :class="{ 'mr-2': !collapsed }" />
   </div>
 </template>
 

@@ -56,9 +56,49 @@ export function createRouterGuards(router: Router) {
       return;
     }
 
-    const userInfo = [];
+    // const userInfo = await userStore.GetInfo();    
 
-    const routes = await asyncRouteStore.generateRoutes(userInfo);
+    const menusList = [
+      {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: 'LAYOUT',
+        redirect: '/dashboard/console',
+        meta: {
+          icon: 'DashboardOutlined',
+          title: 'Dashboard',
+        },
+        children: [
+          // {
+          //   path: 'console',
+          //   name: 'dashboard_console',
+          //   component: '/dashboard/console/console',
+          //   meta: {
+          //     title: '主控台',
+          //   },
+          // },
+          // {
+          //   path: 'monitor',
+          //   name: 'dashboard_monitor',
+          //   component: '/dashboard/monitor/monitor',
+          //   meta: {
+          //     title: '监控页',
+          //   },
+          // },
+          // {
+          //   path: 'workplace',
+          //   name: 'dashboard_workplace',
+          //   component: '/dashboard/workplace/workplace',
+          //   meta: {
+          //     hidden: true,
+          //     title: '工作台',
+          //   },
+          // },
+        ],
+      },
+    ];
+
+    const routes = await asyncRouteStore.generateRoutes(menusList);
 
     // 动态添加可访问路由表
     routes.forEach((item) => {
@@ -105,5 +145,8 @@ export function createRouterGuards(router: Router) {
 
   router.onError((error) => {
     console.log(error, '路由错误');
+    // localStorage.clear();
+    // location.reload();
+    
   });
 }

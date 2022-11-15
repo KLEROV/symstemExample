@@ -4,7 +4,8 @@
         <div class="view-account-container">
             <div class="view-account-top">
                 <div class="view-account-top-logo">
-                    <!-- <img style="width: 200px; margin-left: 50%; transform: translate(-50%)" src="~@/assets/images/newlogo.png" alt="" /> -->
+                    <!-- <div style='font-size:20px;'>CLS</div> -->
+                    <img style="width: 200px; margin-left: 50%; transform: translate(-50%)" src="~@/assets/images/newlogo.png" alt="" />
                 </div>
              
             </div>
@@ -98,6 +99,7 @@ import {
 import { PageEnum } from '@/enums/pageEnum';
 import { encrypt } from '@/utils/rsa.js';
 import { switchCase } from '@babel/types';
+// import { defaultClsPrefix } from 'naive-ui/es/_mixins';
 
 interface FormState {
   userName: string;
@@ -172,9 +174,12 @@ const handleSubmit = (e) => {
             case '非法用户':
               message.info('非法用户!!!');
               break;
-              case 'Google验证错误':
+            case 'Google验证错误':
               message.info('Google验证错误!!!');
               break;
+            default:
+                message.info(msg);
+                break;
           }
         }
       } finally {

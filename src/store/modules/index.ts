@@ -10,10 +10,12 @@ import asyncRoute from './async-route';
 import user from './user';
 import tabsView from './tabs-view';
 import lockscreen from './lockscreen';
+import dynamic from './dynamic';
 
 export default {
   asyncRoute,
   user,
   tabsView,
   lockscreen,
+  dynamic
 };

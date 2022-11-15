@@ -6,8 +6,8 @@
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
     >
       <div class="logo" v-if="navMode === 'horizontal'">
-        <!-- <img src="~@/assets/images/newlogo.png" alt="" /> -->
-        <div>CLS</div>
+        <img src="~@/assets/images/newlogo.png" alt="" />
+        <!-- <div style='font-size:20px;'>CLS</div> -->
       </div>
       <AsideMenu
         v-model:collapsed="collapsed"
@@ -292,10 +292,10 @@
         },
       ];
       const avatarOptions = [
-        {
-          label: '个人设置',
-          key: 1,
-        },
+        // {
+        //   label: '个人设置',
+        //   key: 1,
+        // },
         {
           label: '退出登录',
           key: 2,

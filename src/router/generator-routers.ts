@@ -1,14 +1,15 @@
-import { adminMenus } from '@/api/system/menu';
+import { adminMenus, getMenuList } from '@/api/system/menu';
 import { constantRouterIcon } from './router-icons';
 import { RouteRecordRaw } from 'vue-router';
 import { Layout, ParentLayout } from '@/router/constant';
+import { useUserStore } from '@/store/modules/user';
 import type { AppRouteRecordRaw } from '@/router/types';
-
-const Iframe = () => import('@/views/iframe/index.vue');
+import {getTreeItem,listToTree,addLabel} from "@/utils"
+// const Iframe = () => import('@/views/iframe/index.vue');
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
 LayoutMap.set('LAYOUT', Layout);
-LayoutMap.set('IFRAME', Iframe);
+// LayoutMap.set('IFRAME', Iframe);
 
 /**
  * 格式化 后端 结构信息并递归生成层级路由表
@@ -19,6 +20,9 @@ LayoutMap.set('IFRAME', Iframe);
 export const routerGenerator = (routerMap, parent?): any[] => {
   return routerMap.map((item) => {
     const currentRouter: any = {
+      // 路由id
+      id:item.id,
+      parentId:item.parentId,
       // 路由地址 动态拼接生成如 /dashboard/workplace
       path: `${(parent && parent.path) || ''}/${item.path}`,
       // 路由名称，建议唯一
@@ -34,6 +38,7 @@ export const routerGenerator = (routerMap, parent?): any[] => {
       },
     };
 
+
     // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
     currentRouter.path = currentRouter.path.replace('//', '/');
     // 重定向
@@ -47,22 +52,36 @@ export const routerGenerator = (routerMap, parent?): any[] => {
     }
     return currentRouter;
   });
+
 };
 
 /**
  * 动态生成菜单
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {
-  return new Promise((resolve, reject) => {
-    adminMenus()
-      .then((result) => {
-        const routeList = routerGenerator(result);
-        asyncImportRoute(routeList);
 
+export const generatorDynamicRouter = (): Promise<RouteRecordRaw[]> => {//获取当前权限可查看模块
+  return new Promise((resolve, reject) => {
+    getMenuList()
+      .then((result) => {
+        let routeList = routerGenerator(result);
+        
+        // const userMenu = useUserStore().getUserMenu
+        // let menus = []
+        // userMenu.forEach(item=>{
+        //   menus.push(getTreeItem(routeList,item))
+        // })
+        // menus = listToTree(addLabel(menus))
+        // routeList = menus
+        // console.log(routeList);
+        
+        asyncImportRoute(routeList);
         resolve(routeList);
       })
       .catch((err) => {
+        console.log('菜单失败，2');
+        localStorage.clear();
+        location.reload();
         reject(err);
       });
   });
@@ -77,12 +96,14 @@ export const asyncImportRoute = (routes: AppRouteRecordRaw[] | undefined): void 
   if (!routes) return;
   routes.forEach((item) => {
     if (!item.component && item.meta?.frameSrc) {
+      console.log(`121212`);
       item.component = 'IFRAME';
     }
     const { component, name } = item;
     const { children } = item;
     if (component) {
       const layoutFound = LayoutMap.get(component as string);
+
       if (layoutFound) {
         item.component = layoutFound;
       } else {
@@ -94,6 +115,7 @@ export const asyncImportRoute = (routes: AppRouteRecordRaw[] | undefined): void 
     children && asyncImportRoute(children);
   });
 };
+
 
 /**
  * 动态导入

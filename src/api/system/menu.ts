@@ -33,3 +33,12 @@ export function addOrUpdateMenu(data) {
     data,
   });
 }
+
+//删除菜单
+export function deleteMenu(data) {
+    return http.request({
+      url: `/menu/menu/v1?id=${data}`,
+      method: 'DELETE',
+      
+    });
+  }
